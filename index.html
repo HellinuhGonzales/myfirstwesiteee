@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  
+  <!-- Document Metadata & Mobile Viewport Configuration -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Princess Collene C. Palacio | Personal Portfolio</title>
+
+  <!-- Google Fonts: Playfair Display (Headings) & Plus Jakarta Sans (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Custom Purple Palette & Typography Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            lavender: {
+              50: '#FAF7FD',
+              100: '#F2EBFA',
+              200: '#E5D7F5',
+              300: '#CFB5EC',
+            },
+            royal: {
+              500: '#8B5CF6',
+              600: '#7C3AED',
+              700: '#6D28D9',
+              800: '#5B21B6',
+              900: '#4C1D95',
+            },
+            plum: {
+              900: '#1F142C',
+              700: '#3E2D54',
+              500: '#6B5884',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Inline Custom Styles for Glassmorphism, Card Hover Depth & Animations -->
+  <style>
+    body {
+      background-color: #FAF7FD;
+      color: #1F142C;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .hero-backdrop {
+      background:
+        radial-gradient(circle at 85% 15%, rgba(124, 58, 237, 0.14), transparent 50%),
+        radial-gradient(circle at 12% 85%, rgba(139, 92, 246, 0.12), transparent 55%),
+        #FAF7FD;
+    }
+
+    .glass-nav {
+      background: rgba(250, 247, 253, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .card-elevate {
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+    }
+
+    .card-elevate:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 34px -14px rgba(91, 33, 182, 0.2);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF7FD;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CFB5EC;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #7C3AED;
+    }
+  </style>
+</head>
+<body class="antialiased overflow-x-hidden selection:bg-royal-600 selection:text-white">
+
+  <!-- Non-blocking Toast Notification (Replaces alert) -->
+  <div id="toast" role="status" aria-live="polite" class="fixed bottom-5 right-5 z-50 hidden transform transition-all duration-300 translate-y-4 opacity-0 max-w-xs sm:max-w-sm">
+    <div class="bg-plum-900 text-white px-5 py-3.5 rounded-2xl shadow-xl border border-royal-500/40 flex items-center gap-3 text-sm font-medium">
+      <i class="fa-solid fa-circle-check text-lavender-300 text-base flex-shrink-0"></i>
+      <span id="toast-message">Copied to clipboard!</span>
+    </div>
+  </div>
+
+  <!-- Full-Screen Photo Lightbox Modal -->
+  <div id="lightbox-modal" role="dialog" aria-modal="true" aria-label="Photo Preview" class="fixed inset-0 z-50 hidden bg-plum-900/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6">
+    <button type="button" id="lightbox-close" aria-label="Close Preview" class="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center text-xl transition-colors">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="max-w-3xl w-full flex flex-col items-center">
+      <img id="lightbox-img" src="" alt="Expanded memory photo" class="max-h-[75vh] w-auto max-w-full rounded-3xl shadow-2xl border-2 border-white/20 object-contain bg-plum-900" />
+      <p id="lightbox-caption" class="mt-4 text-center text-white font-medium text-base sm:text-lg bg-white/10 px-5 py-2 rounded-full"></p>
+    </div>
+  </div>
+
+  <!-- Sticky Glassmorphic Header -->
+  <header class="sticky top-0 z-40 glass-nav border-b border-lavender-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        <!-- Brand Monogram -->
+        <a href="#about" class="flex items-center gap-2.5 group">
+          <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-royal-600 to-royal-800 text-white font-serif font-bold text-lg flex items-center justify-center shadow-md shadow-royal-600/20 group-hover:scale-105 transition-transform">
+            PC
+          </span>
+          <span class="font-serif font-bold text-lg sm:text-xl text-plum-900 tracking-tight">
+            Princess<span class="text-royal-600">.</span>
+          </span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav aria-label="Main Navigation" class="hidden md:flex items-center gap-1 lg:gap-1.5">
+          <a href="#about" class="px-3 py-2 rounded-xl text-sm font-medium text-plum-700 hover:text-royal-700 hover:bg-lavender-100 transition-colors">About</a>
+          <a href="#interest" class="px-3 py-2 rounded-xl text-sm font-medium text-plum-700 hover:text-royal-700 hover:bg-lavender-100 transition-colors">My Interest</a>
+          <a href="#home" class="px-3 py-2 rounded-xl text-sm font-medium text-plum-700 hover:text-royal-700 hover:bg-lavender-100 transition-colors">My Home</a>
+          <a href="#works" class="px-3 py-2 rounded-xl text-sm font-medium text-plum-700 hover:text-royal-700 hover:bg-lavender-100 transition-colors">Works</a>
+          <a href="#achievements" class="px-3 py-2 rounded-xl text-sm font-medium text-plum-700 hover:text-royal-700 hover:bg-lavender-100 transition-colors">Achievements &amp; Memories</a>
+          <a href="#future" class="px-3 py-2 rounded-xl text-sm font-medium text-plum-700 hover:text-royal-700 hover:bg-lavender-100 transition-colors">My Future</a>
+          <a href="#contacts" class="ml-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-royal-700 hover:bg-royal-800 shadow-sm shadow-royal-700/25 transition-all">Contacts</a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-toggle" type="button" aria-label="Open Navigation Menu" aria-expanded="false" class="md:hidden p-3 rounded-xl text-plum-900 hover:bg-lavender-100 focus:outline-none focus:ring-2 focus:ring-royal-600">
+          <i id="menu-icon" class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav" class="hidden md:hidden border-t border-lavender-200 bg-white/95 backdrop-blur-md px-4 pt-3 pb-5 space-y-1.5 shadow-lg">
+      <a href="#about" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-plum-700 hover:bg-lavender-100 hover:text-royal-700">About</a>
+      <a href="#interest" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-plum-700 hover:bg-lavender-100 hover:text-royal-700">My Interest</a>
+      <a href="#home" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-plum-700 hover:bg-lavender-100 hover:text-royal-700">My Home</a>
+      <a href="#works" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-plum-700 hover:bg-lavender-100 hover:text-royal-700">Works</a>
+      <a href="#achievements" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-plum-700 hover:bg-lavender-100 hover:text-royal-700">Achievements &amp; Memories</a>
+      <a href="#future" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-plum-700 hover:bg-lavender-100 hover:text-royal-700">My Future</a>
+      <a href="#contacts" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold text-white bg-royal-700 hover:bg-royal-800 text-center mt-2">Contacts</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. HERO & ABOUT SECTION -->
+    <section id="about" class="hero-backdrop py-16 sm:py-24 border-b border-lavender-200/70">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-16">
+          <!-- Text & Bio Column -->
+          <div class="flex-1 text-center lg:text-left w-full">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-lavender-100 border border-lavender-200 text-royal-800 text-xs sm:text-sm font-semibold mb-6">
+              <span class="w-2 h-2 rounded-full bg-royal-600 animate-pulse"></span>
+              Personal Portfolio
+            </div>
+
+            <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-plum-900 leading-tight tracking-tight mb-4">
+              Princess Collene <span class="text-royal-700">C. Palacio</span>
+            </h1>
+
+            <p class="text-base sm:text-lg font-semibold text-royal-800 mb-6">
+              Grade 12 Student &bull; Accountancy, Business, and Management (ABM) Strand
+            </p>
+
+            <div class="bg-white/90 border border-lavender-200 rounded-3xl p-6 sm:p-8 shadow-sm mb-8 text-left">
+              <span class="text-xs font-bold uppercase tracking-widest text-royal-600 block mb-2">About</span>
+              <p class="text-plum-700 text-base sm:text-lg leading-relaxed">
+                Hello, everyone! I'm Princess Collene C. Palacio, and I'm currently a Grade 12 student taking the Accountancy, Business, and Management strand.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              <a href="#works" class="px-6 py-3.5 rounded-2xl bg-royal-700 hover:bg-royal-800 text-white font-semibold text-sm sm:text-base shadow-lg shadow-royal-700/20 transition-all">
+                Read My Works
+              </a>
+              <a href="#contacts" class="px-6 py-3.5 rounded-2xl bg-white hover:bg-lavender-100 text-royal-800 border border-lavender-200 font-semibold text-sm sm:text-base transition-all">
+                Get In Touch
+              </a>
+            </div>
+          </div>
+
+          <!-- Portrait Photo Frame -->
+          <div class="relative flex-shrink-0">
+            <div class="w-60 h-60 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full p-2.5 bg-gradient-to-tr from-royal-800 via-royal-500 to-lavender-300 shadow-2xl shadow-royal-800/20">
+              <div class="w-full h-full rounded-full overflow-hidden bg-lavender-100 border-4 border-white cursor-pointer" onclick="openLightboxFromImg(this.querySelector('img'), 'Princess Collene C. Palacio')">
+                <img
+                  src="IMG_2569.heic"
+                  data-base="IMG_2569"
+                  data-ext="heic"
+                  data-label="Princess Collene"
+                  alt="Portrait of Princess Collene C. Palacio"
+                  class="smart-photo w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-5 py-2 rounded-2xl shadow-md border border-lavender-200 whitespace-nowrap flex items-center gap-2">
+              <span aria-hidden="true" class="text-sm">💜</span>
+              <span class="text-xs sm:text-sm font-bold text-plum-900">Grade 12 ABM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. MY INTEREST SECTION -->
+    <section id="interest" class="py-16 sm:py-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="text-xs font-bold uppercase tracking-widest text-royal-600">Personality &amp; Passions</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-plum-900 mt-2">My Interest</h2>
+          <div class="w-16 h-1 bg-royal-600 rounded-full mx-auto mt-4"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Main Interest Reflection -->
+          <div class="lg:col-span-7 bg-white rounded-3xl p-7 sm:p-9 border border-lavender-200 shadow-sm">
+            <p class="text-plum-700 text-base sm:text-lg leading-relaxed">
+              Purple has always been my favorite color — it feels calm, elegant, and simply beautiful to me. Just a little fun fact about myself, I'm actually allergic to seafood, so I usually skip on those! In my free time, I enjoy playing board games because they're fun and a great way to bond with people, sleeping because it's my favorite way to recharge, and watching movies that let me explore different stories and worlds. Above all, I have big dreams: I want to make my family proud of me, finish my college education no matter what, and eventually land a stable job that will help me build a good life and give back to the people I love the most.
+            </p>
+          </div>
+
+          <!-- Highlight Cards -->
+          <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+            <!-- Favorite Color Card -->
+            <div class="bg-white rounded-2xl p-5 border border-lavender-200 shadow-sm flex items-center gap-4 card-elevate">
+              <div class="w-12 h-12 rounded-2xl bg-royal-700 text-white flex items-center justify-center text-xl flex-shrink-0">
+                <i class="fa-solid fa-heart"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-royal-600">Favorite Color</span>
+                <h3 class="font-bold text-plum-900 text-base">Purple</h3>
+                <p class="text-xs text-plum-500">Calm, elegant, and simply beautiful</p>
+              </div>
+            </div>
+
+            <!-- Fun Fact Card -->
+            <div class="bg-white rounded-2xl p-5 border border-lavender-200 shadow-sm flex items-center gap-4 card-elevate">
+              <div class="w-12 h-12 rounded-2xl bg-lavender-100 text-royal-700 flex items-center justify-center text-xl flex-shrink-0">
+                <i class="fa-solid fa-circle-info"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-royal-600">Fun Fact</span>
+                <h3 class="font-bold text-plum-900 text-base">Allergic to Seafood</h3>
+                <p class="text-xs text-plum-500">Always skips seafood dishes</p>
+              </div>
+            </div>
+
+            <!-- Hobbies & Core Goal Card -->
+            <div class="bg-white rounded-2xl p-5 border border-lavender-200 shadow-sm sm:col-span-2 lg:col-span-1 card-elevate">
+              <span class="text-xs font-bold uppercase tracking-wider text-royal-600 block mb-3">Hobbies &amp; Core Goal</span>
+              <div class="flex flex-wrap gap-2">
+                <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-lavender-50 border border-lavender-200 text-plum-900 text-xs sm:text-sm font-medium">
+                  <i class="fa-solid fa-dice text-royal-600"></i> Board Games
+                </span>
+                <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-lavender-50 border border-lavender-200 text-plum-900 text-xs sm:text-sm font-medium">
+                  <i class="fa-solid fa-bed text-royal-600"></i> Recharging / Sleeping
+                </span>
+                <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-lavender-50 border border-lavender-200 text-plum-900 text-xs sm:text-sm font-medium">
+                  <i class="fa-solid fa-clapperboard text-royal-600"></i> Watching Movies
+                </span>
+                <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-lavender-50 border border-lavender-200 text-plum-900 text-xs sm:text-sm font-medium">
+                  <i class="fa-solid fa-graduation-cap text-royal-600"></i> Family &amp; College
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. MY HOME GALLERY SECTION -->
+    <section id="home" class="py-16 sm:py-24 bg-white border-y border-lavender-200/80">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="text-xs font-bold uppercase tracking-widest text-royal-600">Family &amp; Circle</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-plum-900 mt-2">My Home</h2>
+          <div class="w-16 h-1 bg-royal-600 rounded-full mx-auto mt-4"></div>
+        </div>
+       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+         
+         <!-- Card 1 -->
+          <figure class="bg-lavender-50 rounded-3xl overflow-hidden border border-lavender-200 shadow-sm card-elevate flex flex-col cursor-pointer" onclick="openLightboxFromImg(this.querySelector('img'), '💞🫶🏻')">
+            <div class="aspect-[4/class="smart-photo w-full h-full object-cover"
+              />
+            </div>
+            <figcaption class="p-5 text-center flex-1 flex items-center justify-center">
+              <span class="text-lg font-bold text-plum-900">with buddies 🤟🏻</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. WORKS SECTION -->
+    <section id="works" class="py-16 sm:py-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <span class="text-xs font-bold uppercase tracking-widest text-royal-600">Creative Writing</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-plum-900 mt-2">Works</h2>
+          <div class="w-16 h-1 bg-royal-600 rounded-full mx-auto mt-4"></div>
+        </div>
+
+        <!-- Reader Filter Pills -->
+        <div class="flex flex-wrap justify-center gap-2.5 mb-10">
+          <button type="button" onclick="filterWorks('all')" id="btn-work-all" class="work-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-royal-700 text-white shadow-sm transition-all">
+            All Works
+          </button>
+          <button type="button" onclick="filterWorks('poem')" id="btn-work-poem" class="work-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white text-plum-700 border border-lavender-200 hover:bg-lavender-100 transition-all">
+            Poem: My Story, My Voice
+          </button>
+          <button type="button" onclick="filterWorks('story')" id="btn-work-story" class="work-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white text-plum-700 border border-lavender-200 hover:bg-lavender-100 transition-all">
+            Short Story: The Start That Found Its Way
+          </button>
+        </div>
+
+        <div id="works-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Poem Card -->
+          <article id="card-poem" class="bg-white rounded-3xl p-7 sm:p-10 border border-lavender-200 shadow-sm">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-lavender-100 text-royal-800 text-xs font-bold uppercase tracking-wider mb-4">
+              <i class="fa-solid fa-feather-pointed"></i> Poem
+            </span>
+            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-plum-900 mb-6">
+              My Story, My Voice
+            </h3>
+
+            <div class="space-y-6 text-plum-700 text-base sm:text-[17px] leading-relaxed border-l-2 border-royal-600/35 pl-5">
+              <p>
+                I used to wonder where my place would be,<br />
+                What life would hold, what I would come to see.<br />
+                I looked around and wondered if I’d find<br />
+                A path that felt like it was truly mine.
+              </p>
+
+              <p>
+                But then I learned that every road starts small,<br />
+                That I am the one who answers to the call.<br />
+                No one can walk this journey in my stead —<br />
+                The pen is in my hand, the choice is mine to read.
+              </p>
+
+              <p>
+                There will be days when doubt may find its way,<br />
+                When shadows fall and skies turn into gray.<br />
+                But I will rise, I’ll take another step,<br />
+                For I am the one who shapes my own depth.
+              </p>
+
+              <p>
+                I may not know exactly where I’ll go,<br />
+                Or how the stories of my life will grow,<br />
+                But this I know — whatever I may be,<br />
+                My story begins and belongs to me.
+              </p>
+            </div>
+          </article>
+
+          <!-- Short Story Card -->
+          <article id="card-story" class="bg-white rounded-3xl p-7 sm:p-10 border border-lavender-200 shadow-sm">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-lavender-100 text-royal-800 text-xs font-bold uppercase tracking-wider mb-4">
+              <i class="fa-solid fa-book-open"></i> Short Story
+            </span>
+            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-plum-900 mb-6">
+              The Start That Found Its Way
+            </h3>
+
+            <div class="space-y-5 text-plum-700 text-base sm:text-[17px] leading-relaxed">
+              <p>
+                Lila loved stargazing. Every night she’d sit by her window and watch the sky, wondering what it would be like to reach one of those little twinkling lights. But she always felt small, like she was just one person on a big planet with no special purpose at all.
+              </p>
+
+              <p>
+                One cloudy night, the sky went dark. No stars shone through. Lila felt lonely. She lit a candle and set it on her windowsill just to have a little light of her own.
+              </p>
+
+              <p>
+                As she sat there, a soft glow caught her eye — n<!-- Card 2 -->
+          <figure class="bg-lavender-50 rounded-3xl overflow-hidden border border-lavender-200 shadow-sm card-elevate flex flex-col cursor-pointer" onclick="openLightboxFromImg(this.querySelector('img'), 'Western Aklan Academy Recognition Day')">
+            <div class="aspect-[4/5] bg-lavender-100 overflow-hidden">
+              <img
+                src="IMG_4487.jpeg"
+                data-base="IMG_4487"
+                data-ext="jpeg"
+                data-label="Recognition Day"
+                alt="Western Aklan Academy Recognition Day"
+                class="smart-photo w-full h-full object-cover"
+              />
+            </div>
+            <figcaption class="p-4 text-center flex-1 flex items-center justify-center">
+              <span class="text-xs sm:text-sm font-semibold text-plum-900 leading-snug">Western Aklan Academy Recognition Day</span>
+            </figcaption>
+          </figure>
+
+          <!-- Card 3 -->
+          <figure class="bg-lavender-50 rounded-3xl overflow-hidden border border-lavender-200 shadow-sm card-elevate flex flex-col cursor-pointer" onclick="openLightboxFromImg(this.querySelector('img'), 'Divisionwide Simultaneous Girl Scouting Activity • Spirit Campers')">
+            <div class="aspect-[4/5] bg-lavender-100 overflow-hidden">
+              <img
+                src="IMG_4494.jpeg"
+                data-base="IMG_4494"
+                data-ext="jpeg"
+                data-label="Girl Scouting Activity"
+                alt="Divisionwide Simultaneous Girl Scouting Activity Spirit Campers"
+                class="smart-photo w-full h-full object-cover"
+              />
+            </div>
+            <figcaption class="p-4 text-center flex-1 flex items-center justify-center">
+              <span class="text-xs sm:text-sm font-semibold text-plum-900 leading-snug">Divisionwide Simultaneous Girl Scouting Activity &bull; Spirit Campers</span>
+            </figcaption>
+          </figure>
+
+          <!-- Card 4 -->
+          <figure class="bg-lavender-50 rounded-3xl overflow-hidden border border-lavender-200 shadow-sm card-elevate flex flex-col cursor-pointer" onclick="openLightboxFromImg(this.querySelector('img'), 'Weekend Cafe & Boracay Hangouts')">
+            <div class="aspect-[4/5] bg-lavender-100 overflow-hidden">
+              <img
+                src="75965228-C94E-480B-84C9-998F03663ADA.jpeg"
+                data-base="75965228-C94E-480B-84C9-998F03663ADA"
+                data-ext="jpeg"
+                data-label="Cafes & Boracay Hangouts"
+                alt="Weekend Cafe and Boracay Hangouts"
+                class="smart-photo w-full h-full object-cover"
+              />
+            </div>
+            <figcaption class="p-4 text-center flex-1 flex items-center justify-center">
+              <span class="text-xs sm:text-sm font-semibold text-plum-900 leading-snug">Weekend Cafe &amp; Boracay Hangouts</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- Caption Block Below Gallery -->
+        <div class="max-w-3xl mx-auto text-center">
+          <p class="text-plum-700 text-base sm:text-lg leading-relaxed bg-lavender-50 p-6 sm:p-8 rounded-3xl border border-lavender-200 shadow-sm">
+            Back in JHS I joined every school activity and actually got good grades for it too. Weekends meant hanging out at cafes or a quick trip to Boracay with my friends whenever we were free. Miss this so much! 💞
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. MY FUTURE SECTION -->
+    <section id="future" class="py-16 sm:py-24">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-br from-royal-900 via-royal-800 to-royal-700 rounded-[2rem] p-8 sm:p-12 lg:p-14 text-white shadow-xl shadow-royal-900/20 relative overflow-hidden">
+          <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/5 pointer-events-none"></div>
+          <div class="absolute -bottom-24 -left-16 w-72 h-72 rounded-full bg-royal-500/25 pointer-events-none"></div>
+
+          <div class="relative z-10">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-lavender-200 text-xs font-bold uppercase tracking-widest mb-4">
+              <i class="fa-solid fa-star"></i> Dreams &amp; Purpose
+            </span>
+
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mb-6">
+              My Future
+            </h2>
+
+            <p class="text-lavender-100 text-base sm:text-lg leading-relaxed">
+              Ever since I started dreaming about my future, one goal has always stayed the same: to build a steady, meaningful career that will give me the stability I hope for. I want a stable job not just for myself, but so I can finally provide for my family and give back everything they've done for me — every sacrifice, every effort, and all the love they've poured into raising me. They've given me so much without asking for anything in return
+              <div class="w-12 h-12 rounded-2xl bg-royal-700 text-white flex items-center justify-center text-lg flex-shrink-0">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div class="min-w-0">
+                <span class="text-xs font-bold uppercase tracking-wider text-royal-600 block">Address</span>
+                <p class="font-semibold text-plum-900 text-sm sm:text-base break-words">512 Agripina St. Aurenina Village Parañaque City</p>
+              </div>
+            </div>
+            <button type="button" onclick="copyText('512 Agripina St. Aurenina Village Parañaque City', 'Address copied!')" aria-label="Copy Address" class="p-3 rounded-xl bg-white hover:bg-lavender-100 text-royal-700 border border-lavender-200 transition-colors flex-shrink-0">
+              <i class="fa-regular fa-copy"></i>
+            </button>
+          </div>
+
+          <!-- Phone Card -->
+          <div class="bg-lavender-50 rounded-2xl p-5 border border-lavender-200 flex items-center justify-between gap-4 card-elevate">
+            <div class="flex items-center gap-4 min-w-0">
+              <div class="w-12 h-12 rounded-2xl bg-royal-700 text-white flex items-center justify-center text-lg flex-shrink-0">
+                <i class="fa-solid fa-phone"></i>
+              </div>
+              <div class="min-w-0">
+                <span class="text-xs font-bold uppercase tracking-wider text-royal-600 block">Phone</span>
+                <a href="tel:09913050996" class="font-semibold text-plum-900 hover:text-royal-700 text-sm sm:text-base">09913050996</a>
+              </div>
+            </div>
+            <button type="button" onclick="copyText('09913050996', 'Phone number copied!')" aria-label="Copy Phone Number" class="p-3 rounded-xl bg-white hover:bg-lavender-100 text-royal-700 border border-lavender-200 transition-colors flex-shrink-0">
+              <i class="fa-regular fa-copy"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Social Media Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <!-- Instagram -->
+          <div class="bg-lavender-50 rounded-2xl p-5 border border-lavender-200 flex items-center justify-between gap-3 card-elevate">
+            <a href="https://www.instagram.com/cllynxs/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3.5 min-w-0 flex-1">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 text-white flex items-center justify-center text-lg flex-shrink-0">
+                <i class="fa-brands fa-instagram"></i>
+              </div>
+              <div class="min-w-0">
+                <span class="text-xs font-bold text-plum-500 block">Instagram</span>
+                <span class="text-sm font-bold text-plum-900 truncate block">cllynxs</span>
+              </div>
+            </a>
+            <button type="button" onclick="copyText('cllynxs', 'Instagram handle copied!')" aria-label="Copy Instagram handle" class="p-2.5 rounded-xl bg-white hover:bg-lavender-100 text-royal-700 border border-lavender-200 transition-colors flex-shrink-0">
+              <i class="fa-regular fa-copy text-sm"></i>
+            </button>
+          </div>
+
+          <!-- Facebook -->
+          <div class="bg-lavender-50 rounded-2xl p-5 border border-lavender-200 flex items-center justify-between gap-3 card-elevate">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3.5 min-w-0 flex-1">
+              <div class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg flex-shrink-0">
+                <i class="fa-brands fa-facebook-f"></i>
+              </div>
+              <div class="min-w-0">
+                <span class="text-xs font-bold text-plum-500 block">Facebook</span>
+                <span class="text-sm font-bold text-plum-900 truncate block">Collene Palacio</span>
+              </div>
+            </a>
+            <button type="button" onclick="copyText('Collene Palacio', 'Facebook name copied!')" aria-label="Copy Facebook name" class="p-2.5 rounded-xl bg-white hover:bg-lavender-100 text-royal-700 border border-lavender-200 transition-colors flex-shrink-0">
+              <i class="fa-regular fa-copy text-sm"></i>
+            </button>
+          </div>
+
+          <!-- TikTok -->
+          <div class="bg-lavender-50 rounded-2xl p-5 border border-lavender-200 flex items-center justify-between gap-3 card-elevate">
+            <a href="https://www.tiktok.com/@cxlenzys" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3.5 min-w-0 flex-1">
+              <div class="w-11 h-11 rounded-xl bg-plum-900 text-white flex items-center justify-center text-lg flex-shrink-0">
+                <i class="fa-brands fa-tiktok"></i>
+              </div>
+              <div class="min-w-0">
+                <span class="text-xs font-bold text-plum-500 block">TikTok</span>
+                <span class="text-sm font-bold text-plum-900 truncate block">cxlenzys</span>
+              </div>
+            </a>
+            <button type="button" onclick="copyText('cxlenzys', 'TikTok handle copied!')" aria-label="Copy TikTok handle" class="p-2.5 rounded-xl bg-white hover:bg-lavender-100 text-royal-700 border border-lavender-200 transition-colors flex-shrink-0">
+              <i class="fa-regular fa-copy text-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-plum-900 text-lavender-200 py-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div>
+        <p class="font-serif text-lg font-bold text-white">Princess Collene C. Palacio</p>
+        <p class="text-xs text-lavender-300 mt-1">Grade 12 &bull; Accountancy, Business, and Management (ABM)</p>
+      </div>
+      <p class="text-xs text-lavender-300">
+        &copy; <span id="footer-year"></span> Princess Collene C. Palacio
+      </p>
+    </div>
+  </footer>
+
+  <!-- Embedded JavaScript: Smart Image Variant Fallback, Lightbox, Navigation & Clipboard -->
+  <script>
+    (function () {
+      // 1. Set current year in footer
+      const yearEl = document.getElementById('footer-year');
+      if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+      }
+
+      // 2. Smart Image Loader: automatically tries _2, _3, and extension variants at root
+      const smartPhotos = document.querySelectorAll('img.smart-photo');
+      smartPhotos.forEach(function (img) {
+        const base = img.getAttribute('data-base');
+        const primaryExt = img.getAttribute('data-ext') || 'jpeg';
+        const label = img.getAttribute('data-label') || 'Photo';
+        // Build candidate list in priority order
+        const candidates = [
+          base + '.' + primaryExt,
+          base + '_2.' + primaryExt,
+          base + '_3.' + primaryExt,
+          base + '.jpg',
+          base + '.jpeg',
+          base + '.JPG',
+          base + '.JPEG',
+          base + '.heic',
+          base + '.HEIC',
+          base + '_2.jpg',
+          base + '_2.jpeg',
+          base + '_3.jpg',
+          base + '_3.jpeg'
+        ];
+
+        // Deduplicate candidates while preserving order
+        const uniqueCandidates = candidates.filter(function (item, idx) {
+          return candidates.indexOf(item) === idx;
+        });
+
+        let attemptIndex = 0;
+
+        img.addEventListener('error', function handleImgError() {
+          attemptIndex += 1;
+          if (attemptIndex < uniqueCandidates.length) {
+            img.src = uniqueCandidates[attemptIndex];
+          } else {
+            img.removeEventListener('error', handleImgError);
+            const encodedLabel = encodeURIComponent(label);
+            img.src = 'https://placehold.co/600x750/E5D7F5/4C1D95?text=' + encodedLabel;
+          }
+        });
+      });
+
+      // 3. Mobile Navigation Drawer Toggle
+      const menuToggle = document.getElementById('menu-toggle');
+      const mobileNav = document.getElementById('mobile-nav');
+      const menuIcon = document.getElementById('menu-icon');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+
+      function toggleMobileMenu(open) {
+        if (open) {
+          mobileNav.classList.remove('hidden');
+          menuToggle.setAttribute('aria-expanded', 'true');
+          menuIcon.classList.remove('fa-bars');
+          menuIcon.classList.add('fa-xmark');
+        } else {
+          mobileNav.classList.add('hidden');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuIcon.classList.remove('fa-xmark');
+          menuIcon.classList.add('fa-bars');
+        }
+      }
+
+      if (menuToggle && mobileNav) {
+        menuToggle.addEventListener('click', function () {
+          const isCurrentlyOpen = !mobileNav.classList.contains('hidden');
+          toggleMobileMenu(!isCurrentlyOpen);
+        });
+
+        mobileLinks.forEach(function (link) {
+          link.addEventListener('click', function () {
+            toggleMobileMenu(false);
+          });
+        });
+      }
+
+      // 4. Interactive Photo Lightbox Modal
+      const lightboxModal = document.getElementById('lightbox-modal');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+
+      window.openLightboxFromImg = function (imgEl, captionText) {
+        if (!imgEl || !lightboxModal) return;
+        lightboxImg.src = imgEl.currentSrc || imgEl.src;
+        lightboxCaption.textContent = captionText || '';
+        lightboxModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      };
+
+      function closeLightbox() {
+        if (!lightboxModal) return;
+        lightboxModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      if (lightboxClose) {
+        lightboxClose.addEventListener('click', closeLightbox);
+      }
+      if (lightboxModal) {
+        lightboxModal.addEventListener('click', function (e) {
+          if (e.target === lightboxModal) {
+            closeLightbox();
+          }
+        });
+      }
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && lightboxModal && !lightboxModal.classList.contains('hidden')) {
+          closeLightbox();
+        }
+      });
+
+      // 5. Toast Notification Helper
+      let toastTimeout = null;
+      window.showToast = function (text) {
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toast-message');
+        if (!toast || !toastMsg) return;
+
+        toastMsg.textContent = text;
+        toast.classList.remove('hidden');
+        void toast.offsetWidth;
+        toast.classList.remove('translate-y-4', 'opacity-0');
+
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(function () {
+          toast.classList.add('translate-y-4', 'opacity-0');
+          setTimeout(function () {
+            toast.classList.add('hidden');
+          }, 300);
+        }, 2600);
+      };
+
+      // 6. Clipboard Copy Helper (Compatible with Mobile & Embedded Frames)
+      window.copyText = function (value, feedbackMessage) {
+        try {
+          const tempInput = document.createElement('textarea');
+          tempInput.value = value;
+          tempInput.setAttribute('readonly', '');
+          tempInput.style.position = 'fixed';
+          tempInput.style.opacity = '0';
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
+          window.showToast(feedbackMessage || 'Copied!');
+        } catch (err) {
+          window.showToast('Unable to copy automatically.');
+        }
+      };
+
+      // 7. Works Section Reader Filter
+      window.filterWorks = function (choice) {
+        const poemCard = document.getElementById('card-poem');
+        const storyCard = document.getElementById('card-story');
+        const grid = document.getElementById('works-grid');
+        const tabs = document.querySelectorAll('.work-tab');
+
+        tabs.forEach(function (tab) {
+          tab.classList.remove('bg-royal-700', 'text-white', 'shadow-sm');
+          tab.classList.add('bg-white', 'text-plum-700', 'border', 'border-lavender-200');
+        });
+
+        const activeTab = document.getElementById('btn-work-' + choice);
+        if (activeTab) {
+          activeTab.classList.remove('bg-white', 'text-plum-700', 'border', 'border-lavender-200');
+          activeTab.classList.add('bg-royal-700', 'text-white', 'shadow-sm');
+        }
+
+        if (choice === 'all') {
+          poemCard.classList.remove('hidden');
+          storyCard.classList.remove('hidden');
+          grid.classList.add('lg:grid-cols-2');
+          grid.classList.remove('max-w-3xl', 'mx-auto');
+        } else if (choice === 'poem') {
+          poemCard.classList.remove('hidden');
+          } else if (choice === 'story') {
+          storyCard.classList.remove('hidden');
+          poemCard.classList.add('hidden');
+          grid.classList.remove('lg:grid-cols-2');
+          grid.classList.add('max-w-3xl', 'mx-auto');
+        }
+      };
+    })();
+  </script>
+</body>
+</html>
+          storyCard.classList.add('hidden');
+          grid.classList.remove('lg:grid-cols-2');
+          grid.classList.add('max-w-3xl', 'mx-auto');
+          
+
+                           
+              
+            
